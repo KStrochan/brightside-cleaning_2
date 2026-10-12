@@ -1,0 +1,847 @@
+@import "tailwindcss";
+
+/* Brightside design tokens: soap blue and sponge yellow on clean white. */
+:root {
+  --bg: #F4F7FC;
+  --surface: #E3EAF8;
+  --fg: #16205B;
+  --muted: #4A5480;
+  --border: #CBD5EE;
+  --accent: #2F4BFF;
+  --on-accent: #FFFFFF;
+  --link: #2F4BFF;
+  --error: #B42318;
+  --radius: 16px;
+  --focus-ring: 3px solid #2F4BFF;
+  --sponge: #FFD54A;
+  --bubble: #BFE8FF;
+  --card: #FFFFFF;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --font-display: var(--font-heading);
+  --font-sans: var(--font-body);
+  --radius-site: var(--radius);
+  --color-sponge: var(--sponge);
+  --color-bubble: var(--bubble);
+  --color-card: var(--card);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading), var(--font-body), sans-serif;
+  font-weight: 750;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+@layer base {
+  a {
+    color: var(--link);
+    text-underline-offset: 0.2em;
+  }
+}
+
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 50;
+  padding: 0.5rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Lead form */
+.lead-form {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.lead-form__field {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.lead-form__label {
+  font-weight: 600;
+}
+
+.lead-form__control {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+}
+
+.lead-form__control[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.lead-form__error {
+  color: var(--error);
+  font-size: 0.9375rem;
+}
+
+.lead-form__submit {
+  justify-self: start;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lead-form__submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* Visually hidden while empty but kept in the accessibility tree, so screen readers announce the result. */
+.lead-form__status:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.photo-credits {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Brightside: pills, soft squircles, bubbles and one wipe. */
+.lead-form__control {
+  background: var(--card);
+  border-radius: 14px;
+}
+
+.lead-form__submit {
+  border-radius: 999px;
+  padding: 0.85rem 1.75rem;
+  font-weight: 700;
+}
+
+.photo-credits a {
+  color: inherit;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn:hover {
+  background: #1F38E0;
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  border: 2px solid var(--fg);
+  color: var(--fg);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.squircle {
+  border-radius: 40px;
+}
+
+/* Hero: a squeegee wipes the fog off the photo once, on load. */
+.wipe {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.wipe__fog {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(60% 40% at 30% 30%, rgb(255 255 255 / 0.55), transparent 70%),
+    radial-gradient(50% 35% at 70% 70%, rgb(255 255 255 / 0.45), transparent 70%),
+    rgb(214 224 240 / 0.72);
+  backdrop-filter: blur(10px) saturate(0.6);
+  -webkit-backdrop-filter: blur(10px) saturate(0.6);
+  animation: fog-clear 1.7s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+.wipe__blade {
+  position: absolute;
+  top: -6%;
+  bottom: -6%;
+  left: -14%;
+  z-index: 2;
+  width: 14%;
+  pointer-events: none;
+  animation: blade-sweep 1.7s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+@keyframes fog-clear {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes blade-sweep {
+  0% {
+    left: -14%;
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.glint {
+  position: absolute;
+  z-index: 3;
+  transform: scale(0);
+  animation: glint-pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes glint-pop {
+  0% {
+    transform: scale(0) rotate(-40deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+.twinkle {
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.6) rotate(25deg);
+    opacity: 0.55;
+  }
+}
+
+/* Soap bubbles that drift up and wobble. */
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 32% 28%, rgb(255 255 255 / 0.95) 0 9%, rgb(255 255 255 / 0) 10%),
+    radial-gradient(circle at 50% 50%, rgb(191 232 255 / 0.1) 55%, rgb(120 160 255 / 0.45) 72%, rgb(255 213 74 / 0.35) 86%, rgb(255 255 255 / 0.6) 100%);
+  box-shadow: inset -4px -6px 12px rgb(47 75 255 / 0.12);
+  animation: bubble-rise var(--dur, 9s) linear var(--delay, 0s) infinite;
+  pointer-events: none;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  25% {
+    transform: translate(var(--sway, 14px), -25vh) scale(0.85);
+  }
+  50% {
+    transform: translate(calc(var(--sway, 14px) * -1), -50vh) scale(1);
+  }
+  75% {
+    transform: translate(var(--sway, 14px), -75vh) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, -100vh) scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* Promise ticker */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 100%;
+  animation: marquee var(--speed, 32s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee--reverse .marquee__track {
+  animation-direction: reverse;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Service illustrations. Each loops gently; the card hover speeds it up. */
+.ill * {
+  transform-box: fill-box;
+}
+
+.ill-mist {
+  transform-origin: left center;
+  animation: mist 1.8s ease-out infinite;
+}
+
+.ill-mist:nth-of-type(2) {
+  animation-delay: 0.25s;
+}
+
+.ill-mist:nth-of-type(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes mist {
+  0% {
+    transform: translateX(0) scale(0.3);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(26px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.ill-trigger {
+  transform-origin: right top;
+  animation: squeeze 1.8s ease-in-out infinite;
+}
+
+@keyframes squeeze {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  12% {
+    transform: rotate(-14deg);
+  }
+  24% {
+    transform: rotate(0);
+  }
+}
+
+.ill-glide {
+  animation: glide 3.2s ease-in-out infinite;
+}
+
+@keyframes glide {
+  0%,
+  100% {
+    transform: translateX(-14px);
+  }
+  50% {
+    transform: translateX(14px);
+  }
+}
+
+.ill-wheel {
+  transform-origin: center;
+  animation: spin 3.2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0%,
+  100% {
+    transform: rotate(-120deg);
+  }
+  50% {
+    transform: rotate(120deg);
+  }
+}
+
+.ill-dust {
+  animation: dust 3.2s ease-in-out infinite;
+}
+
+@keyframes dust {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.ill-mop {
+  transform-origin: top center;
+  animation: mop 2.4s ease-in-out infinite;
+}
+
+@keyframes mop {
+  0%,
+  100% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+
+.ill-water {
+  animation: slosh 2.4s ease-in-out infinite;
+}
+
+@keyframes slosh {
+  0%,
+  100% {
+    transform: skewY(-4deg);
+  }
+  50% {
+    transform: skewY(4deg);
+  }
+}
+
+.ill-shine {
+  transform-origin: center;
+  animation: twinkle 2.2s ease-in-out infinite;
+}
+
+.ill-shine:nth-of-type(2) {
+  animation-delay: 0.7s;
+}
+
+.ill-steam {
+  animation: steam 2.6s ease-in-out infinite;
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+}
+
+.service-card:hover .ill * {
+  animation-duration: 0.9s;
+}
+
+/* Checklist ticks draw themselves in. */
+.tick path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: tick-draw 0.45s ease-out forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes tick-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Sponge in the call to action */
+.sponge {
+  transform-origin: center bottom;
+  animation: squish 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes squish {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  15% {
+    transform: scale(1.12, 0.82);
+  }
+  30% {
+    transform: scale(0.94, 1.08);
+  }
+  45% {
+    transform: scale(1, 1);
+  }
+}
+
+.foam {
+  animation: foam 2.4s ease-out infinite;
+  animation-delay: var(--d, 0.2s);
+  opacity: 0;
+}
+
+@keyframes foam {
+  0%,
+  12% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  70% {
+    transform: translate(var(--x, 0), -48px) scale(1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Contact page van */
+.van {
+  animation: van-drive 9s linear infinite;
+}
+
+@keyframes van-drive {
+  from {
+    transform: translateX(-140px);
+  }
+  to {
+    transform: translateX(560px);
+  }
+}
+
+.van-bounce {
+  animation: van-bounce 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes van-bounce {
+  to {
+    transform: translateY(-2px);
+  }
+}
+
+/* Booking confirmation */
+.done-mark circle {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: tick-draw 0.6s ease-out forwards;
+}
+
+.done-mark path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: tick-draw 0.35s ease-out 0.5s forwards;
+}
+
+.done-spark {
+  animation: done-spark 0.8s ease-out 0.6s both;
+}
+
+@keyframes done-spark {
+  from {
+    transform: translate(0, 0) scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--x), var(--y)) scale(1);
+    opacity: 0;
+  }
+}
+
+footer .photo-credits {
+  color: inherit;
+}
+
+.lead-form__status:not(:empty) {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.lead-form__status .done-mark {
+  color: var(--accent);
+}
+
+/* Hero text messages from the cleaner, popping in after the wipe. */
+.msg {
+  opacity: 0;
+  transform: translateY(14px) scale(0.92);
+  animation: msg-in 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--d, 2.4s);
+}
+
+@keyframes msg-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.typing span {
+  animation: typing 1.2s ease-in-out infinite;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Stars fill one after another. */
+.star {
+  clip-path: inset(0 100% 0 0);
+  animation: star-fill 0.35s ease-out forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes star-fill {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Rotating badge on the cleaner photo */
+.spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The ticker band sits at a slight angle. */
+.tilt {
+  transform: rotate(-2deg);
+}
+
+.kenburns {
+  animation: kenburns 16s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08) translate(-1%, -1%);
+  }
+}
+
+/* Small reusable entrances, used when something changes in answer to a click. */
+.pop-in {
+  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes pop-in {
+  from {
+    transform: translateY(12px) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.4s ease-out both;
+}
+
+@keyframes fade-up {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.num-in {
+  animation: num-in 0.35s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+
+@keyframes num-in {
+  from {
+    transform: translateY(70%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.reveal-right {
+  animation: reveal-right 0.75s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes reveal-right {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Step circles spring in when the process section is reached. */
+[data-armed="true"] .step-dot {
+  transform: scale(0.4) rotate(-30deg);
+  opacity: 0;
+}
+
+.is-seen .step-dot {
+  animation: step-pop 0.7s cubic-bezier(0.34, 1.7, 0.64, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes step-pop {
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.draw-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--progress, 0));
+}
+
+.grow-bar {
+  transform: scaleY(var(--progress, 0));
+  transform-origin: top;
+}
+
+/* Accordion answers open by animating the grid row from 0 to its content height. */
+.accordion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.accordion > div {
+  overflow: hidden;
+}
