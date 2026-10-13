@@ -19,8 +19,8 @@ export function Odometer({ value, className = "" }: { value: string; className?:
           const digit = DIGITS.indexOf(char);
           if (digit === -1) {
             return (
-              <span key={`s${key}`} className="inline-block">
-                {char}
+              <span key={`s${key}`} className="inline-block whitespace-pre">
+                {char === " " ? "\u00A0" : char}
               </span>
             );
           }
@@ -28,7 +28,7 @@ export function Odometer({ value, className = "" }: { value: string; className?:
             <span key={`d${key}`} className="relative inline-block h-[1em] overflow-hidden tabular-nums">
               <span className="invisible">0</span>
               <span
-                className="absolute inset-x-0 top-0 flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.22,1.4,0.36,1)] motion-reduce:transition-none"
+                className="absolute inset-x-0 top-0 flex flex-col text-center transition-transform duration-700 ease-[cubic-bezier(0.22,1.4,0.36,1)] motion-reduce:transition-none"
                 style={{ transform: `translateY(-${digit * 10}%)` }}
               >
                 {DIGITS.map((d) => (
